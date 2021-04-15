@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         with(binding) {
+            timerView.setup()
+
             timerView.setOnClickListener {
                 timerView.start(5L)
             }

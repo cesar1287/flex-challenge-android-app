@@ -4,6 +4,6 @@ class Constants {
 
     object TimerView {
         const val ARC_START_ANGLE = 270f
-        const val THICKNESS_SCALE = 0.03f
+        const val THICKNESS_SCALE = 0.05f
     }
 }

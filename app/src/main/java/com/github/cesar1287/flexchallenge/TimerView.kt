@@ -23,6 +23,7 @@ class TimerView @JvmOverloads constructor(
     private var mCircleInnerBounds: RectF? = null
 
     private var mCirclePaint: Paint? = null
+    private var mCircleGrayPaint: Paint? = null
     private var mEraserPaint: Paint? = null
 
     private var mCircleSweepAngle = 0f
@@ -41,9 +42,14 @@ class TimerView @JvmOverloads constructor(
         mCirclePaint = Paint()
         mCirclePaint?.isAntiAlias = true
         mCirclePaint?.color = circleColor
+
+        mCircleGrayPaint = Paint()
+        mCircleGrayPaint?.isAntiAlias = true
+        mCircleGrayPaint?.color = Color.GRAY
+
         mEraserPaint = Paint()
         mEraserPaint?.isAntiAlias = true
-        mEraserPaint?.color = Color.RED
+        mEraserPaint?.color = Color.TRANSPARENT
         mEraserPaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
@@ -55,7 +61,7 @@ class TimerView @JvmOverloads constructor(
         if (width != oldWidth || height != oldHeight) {
             mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             mBitmap?.let {
-                it.eraseColor(Color.RED)
+                it.eraseColor(Color.TRANSPARENT)
                 mCanvas = Canvas(it)
             }
         }
@@ -69,15 +75,26 @@ class TimerView @JvmOverloads constructor(
             mCircleOuterBounds?.let { rectFOuter ->
                 mCircleInnerBounds?.let { rectFInner ->
                     mCirclePaint?.let { paint ->
-                        mEraserPaint?.let { eraserPaint ->
-                            mCanvas?.drawArc(
-                                rectFOuter,
-                                ARC_START_ANGLE,
-                                mCircleSweepAngle,
-                                true,
-                                paint
-                            )
-                            mCanvas?.drawOval(rectFInner, eraserPaint)
+                        mCircleGrayPaint?.let { paintGray ->
+                            mEraserPaint?.let { eraserPaint ->
+                                mCanvas?.drawArc(
+                                    rectFOuter,
+                                    ARC_START_ANGLE,
+                                    360f,
+                                    true,
+                                    paintGray
+                                )
+
+                                mCanvas?.drawArc(
+                                    rectFOuter,
+                                    ARC_START_ANGLE,
+                                    mCircleSweepAngle,
+                                    true,
+                                    paint
+                                )
+
+                                mCanvas?.drawOval(rectFInner, eraserPaint)
+                            }
                         }
                     }
                 }
@@ -125,5 +142,9 @@ class TimerView @JvmOverloads constructor(
             (mCircleOuterBounds?.bottom ?: 0f) - thickness
         )
         invalidate()
+    }
+
+    fun setup() {
+        drawProgress(0.0001f)
     }
 }
