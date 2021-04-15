@@ -7,6 +7,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.github.cesar1287.flexchallenge.Constants.TimerView.ARC_START_ANGLE
+import com.github.cesar1287.flexchallenge.Constants.TimerView.FULL_ROTATION_DEGREE
+import com.github.cesar1287.flexchallenge.Constants.TimerView.FULL_ROTATION_GRAY_OUTER_CIRCLE
+import com.github.cesar1287.flexchallenge.Constants.TimerView.INITIAL_VALUE
 import com.github.cesar1287.flexchallenge.Constants.TimerView.THICKNESS_SCALE
 import java.util.concurrent.TimeUnit
 
@@ -80,7 +83,7 @@ class TimerView @JvmOverloads constructor(
                                 mCanvas?.drawArc(
                                     rectFOuter,
                                     ARC_START_ANGLE,
-                                    360f,
+                                    FULL_ROTATION_GRAY_OUTER_CIRCLE,
                                     true,
                                     paintGray
                                 )
@@ -141,7 +144,7 @@ class TimerView @JvmOverloads constructor(
     }
 
     private fun drawProgress(progress: Float) {
-        mCircleSweepAngle = 360 * progress
+        mCircleSweepAngle = FULL_ROTATION_DEGREE * progress
         invalidate()
     }
 
@@ -158,6 +161,6 @@ class TimerView @JvmOverloads constructor(
     }
 
     fun setup() {
-        drawProgress(0.0001f)
+        drawProgress(INITIAL_VALUE)
     }
 }
