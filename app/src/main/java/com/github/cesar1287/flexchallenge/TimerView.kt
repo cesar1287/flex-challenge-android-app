@@ -105,7 +105,21 @@ class TimerView @JvmOverloads constructor(
     }
 
     fun start(seconds: Long) {
-        stop()
+        if (mTimerAnimator?.isRunning == true) {
+            if (mTimerAnimator?.isPaused == true) {
+                mTimerAnimator?.resume()
+            } else {
+                mTimerAnimator?.pause()
+                drawProgress((mTimerAnimator?.animatedValue as? Float) ?: 0f)
+            }
+        } else {
+            stop()
+            setupTimerAnimation(seconds)
+            mTimerAnimator?.start()
+        }
+    }
+
+    private fun setupTimerAnimation(seconds: Long) {
         mTimerAnimator = ValueAnimator.ofFloat(0f, 1f)
         mTimerAnimator?.duration = TimeUnit.SECONDS.toMillis(seconds)
         mTimerAnimator?.interpolator = LinearInterpolator()
@@ -114,7 +128,6 @@ class TimerView @JvmOverloads constructor(
                 animation.animatedValue as Float
             )
         }
-        mTimerAnimator?.start()
     }
 
     private fun stop() {
