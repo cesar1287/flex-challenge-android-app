@@ -29,9 +29,9 @@ class TimerView @JvmOverloads constructor(
     private var mCircleGrayPaint: Paint? = null
     private var mEraserPaint: Paint? = null
 
-    private var mCircleSweepAngle = 0f
+    internal var mCircleSweepAngle = 0f
 
-    private var mTimerAnimator: ValueAnimator? = null
+    internal var mTimerAnimator: ValueAnimator? = null
 
     init {
         var circleColor: Int = Color.RED
@@ -122,7 +122,7 @@ class TimerView @JvmOverloads constructor(
         }
     }
 
-    private fun setupTimerAnimation(seconds: Long) {
+    internal fun setupTimerAnimation(seconds: Long) {
         mTimerAnimator = ValueAnimator.ofFloat(0f, 1f)
         mTimerAnimator?.duration = TimeUnit.SECONDS.toMillis(seconds)
         mTimerAnimator?.interpolator = LinearInterpolator()
@@ -133,7 +133,7 @@ class TimerView @JvmOverloads constructor(
         }
     }
 
-    private fun stop() {
+    internal fun stop() {
         mTimerAnimator?.let {
             if (it.isRunning) {
                 it.cancel()
